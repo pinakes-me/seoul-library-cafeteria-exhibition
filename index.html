@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>도서관 구내식당은 왜 사라졌는가 — 서울시 공공도서관 구내식당의 변화</title>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-jp.css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700&display=swap" />
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+
+<style>
+:root{
+  /* Hailey's Scandinavian research studio palette */
+  --navy-deep: #0a1628;
+  --navy: #14233d;
+  --navy-mid: #1f3354;
+  --mustard: #d4a017;
+  --mustard-soft: #e8b94a;
+  --mustard-deep: #a67c0d;
+  --cream: #f5efe0;
+  --cream-warm: #ede4cf;
+  --paper: #faf6ec;
+  --ink: #1a1f2e;
+  --ink-soft: #3d4456;
+  --rule: #d4c79b;
+  --rule-soft: #e6dcb8;
+
+  --serif: "Fraunces", "Noto Serif KR", "Pretendard JP Variable", "Pretendard Variable", serif;
+  --sans: "Pretendard Variable", "Pretendard JP Variable", -apple-system, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+html{ scroll-behavior:smooth; }
+
+body{
+  font-family: var(--sans);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.7;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  /* paper grain */
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(20,35,61,0.04) 1px, transparent 0),
+    radial-gradient(circle at 11px 7px, rgba(166,124,13,0.02) 1px, transparent 0);
+  background-size: 23px 23px, 17px 19px;
+}
+
+/* ---------- typographic primitives ---------- */
+.label{
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mustard-deep);
+}
+.label--inverse{ color: var(--mustard-soft); }
+.label--rule{ display:inline-flex; align-items:center; gap:12px; }
+.label--rule::before, .label--rule::after{
+  content:""; height:1px; background: currentColor; opacity:0.4; flex:1; min-width:24px;
+}
+
+h1, h2, h3{ font-family: var(--serif); font-weight: 400; letter-spacing: -0.02em; line-height: 1.15; }
+
+/* numeric / call-out */
+.numeral{ font-family: var(--serif); font-variant-numeric: lining-nums; font-feature-settings: "lnum"; }
+
+/* ---------- layout primitives ---------- */
+.shell{ max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+.shell-narrow{ max-width: 720px; margin: 0 auto; padding: 0 32px; }
+
+section{ padding: 120px 0; position: relative; }
+
+/* ============================================ */
+/*  HEADER / META BAR                           */
+/* ============================================ */
+.meta-bar{
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 50;
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 14px 32px;
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--ink-soft);
+  background: rgba(250,246,236, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule-soft);
+}
+.meta-bar .left{ display:flex; gap: 24px; align-items:center; }
+.meta-bar .dot{ width:6px; height:6px; border-radius:50%; background: var(--mustard); }
+.meta-bar nav{ display:flex; gap:20px; }
+.meta-bar nav a{ color: var(--ink-soft); text-decoration:none; transition: color .2s; }
+.meta-bar nav a:hover{ color: var(--mustard-deep); }
+@media (max-width: 720px){
+  .meta-bar nav{ display:none; }
+}
+
+/* ============================================ */
+/*  HERO                                        */
+/* ============================================ */
+.hero{
+  min-height: 100vh;
+  padding-top: 140px;
+  padding-bottom: 80px;
+  display:flex; flex-direction:column; justify-content: space-between;
+  position:relative; overflow:hidden;
+}
+.hero::before{
+  content:""; position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 80% 20%, rgba(212,160,23,0.08), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 10% 90%, rgba(20,35,61,0.06), transparent 60%);
+  pointer-events:none;
+}
+.hero .shell{ position:relative; z-index:1; }
+
+.hero-cat{
+  display:flex; justify-content:space-between; flex-wrap:wrap; gap:24px;
+  margin-bottom: 80px;
+  font-family: var(--mono); font-size: 11px;
+  color: var(--ink-soft);
+  letter-spacing: 0.1em;
+}
+.hero-cat .k{ color: var(--mustard-deep); text-transform: uppercase; margin-right: 10px; letter-spacing: 0.18em; font-size:10px; }
+
+.hero h1{
+  font-size: clamp(48px, 7vw, 96px);
+  line-height: 1.02;
+  font-weight: 300;
+  font-style: italic;
+  max-width: 14ch;
+  margin-bottom: 16px;
+  color: var(--navy-deep);
+}
+.hero h1 .ko{
+  display:block; font-family: var(--serif); font-style: normal;
+  font-weight: 500; font-size: clamp(36px, 5.5vw, 72px);
+  letter-spacing: -0.03em; margin-top: 8px;
+  color: var(--ink);
+}
+.hero h1 em{
+  font-style: italic;
+  color: var(--mustard-deep);
+  position: relative;
+}
+
+.hero-sub{
+  font-family: var(--sans);
+  font-size: 18px; max-width: 56ch;
+  color: var(--ink-soft);
+  margin-top: 32px;
+  line-height: 1.6;
+}
+
+.hero-foot{
+  display:flex; justify-content:space-between; flex-wrap:wrap; gap: 32px;
+  margin-top: 80px;
+  padding-top: 24px; border-top: 1px solid var(--rule-soft);
+}
+.hero-foot .col{ font-family: var(--mono); font-size: 11px; color: var(--ink-soft); letter-spacing: 0.05em; }
+.hero-foot .col .lab{ color: var(--mustard-deep); text-transform: uppercase; font-size: 9px; letter-spacing: 0.2em; margin-bottom: 6px; display:block; }
+
+.scroll-cue{
+  display:flex; align-items:center; gap:10px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-top: 40px;
+}
+.scroll-cue .line{
+  width: 60px; height:1px; background: var(--mustard);
+  animation: extend 2.4s ease-in-out infinite;
+  transform-origin: left;
+}
+@keyframes extend{
+  0%, 100%{ transform: scaleX(0.3); opacity: 0.4; }
+  50%{ transform: scaleX(1); opacity: 1; }
+}
+
+/* ============================================ */
+/*  SECTION OPENING (chapter card)              */
+/* ============================================ */
+.chapter{
+  display:grid;
+  grid-template-columns: 200px 1fr;
+  gap: 64px;
+  margin-bottom: 64px;
+}
+.chapter .num{
+  font-family: var(--serif);
+  font-size: 72px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--mustard);
+  line-height: 1;
+  border-top: 2px solid var(--mustard);
+  padding-top: 16px;
+}
+.chapter .num small{
+  display:block; font-family: var(--mono);
+  font-size: 10px; letter-spacing: 0.2em; color: var(--ink-soft);
+  font-style: normal; text-transform: uppercase;
+  margin-top: 8px;
+}
+.chapter h2{
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.1;
+  margin-bottom: 24px;
+  color: var(--navy-deep);
+}
+.chapter h2 em{ font-style: italic; color: var(--mustard-deep); }
+.chapter .lede{
+  font-size: 17px; max-width: 56ch; color: var(--ink-soft);
+}
+@media (max-width: 760px){
+  .chapter{ grid-template-columns: 1fr; gap: 24px; }
+  .chapter .num{ font-size: 56px; }
+}
+
+/* ============================================ */
+/*  CONTEXT SECTION                             */
+/* ============================================ */
+#context{ background: var(--cream); }
+#context::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent, var(--rule), transparent);
+}
+
+.context-grid{
+  display:grid; grid-template-columns: repeat(3, 1fr); gap: 40px;
+  margin-top: 48px;
+}
+.context-card{
+  border-left: 2px solid var(--mustard);
+  padding: 4px 0 4px 20px;
+}
+.context-card .ttl{
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--mustard-deep); margin-bottom: 12px;
+}
+.context-card h4{
+  font-family: var(--serif); font-size: 22px; font-weight: 400;
+  margin-bottom: 12px; line-height: 1.25;
+  color: var(--navy-deep);
+}
+.context-card p{ font-size: 14.5px; color: var(--ink-soft); line-height: 1.65; }
+@media (max-width: 760px){
+  .context-grid{ grid-template-columns: 1fr; gap: 24px; }
+}
+
+/* ============================================ */
+/*  POINT 1 — the disappearance                 */
+/* ============================================ */
+.disappearance{
+  margin: 80px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.disappearance .figure{
+  text-align: center;
+  position: relative;
+}
+.disappearance .figure .tiny{
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-soft); margin-bottom: 12px;
+}
+.disappearance .figure .year{
+  font-family: var(--serif); font-style: italic; font-weight:300;
+  font-size: 56px; color: var(--navy-deep);
+  margin-bottom: 8px;
+}
+.disappearance .figure .big{
+  font-family: var(--serif);
+  font-variant-numeric: lining-nums;
+  font-size: 180px; line-height: 0.9;
+  font-weight: 300;
+  color: var(--mustard);
+  letter-spacing: -0.04em;
+}
+.disappearance .figure .big.fade{
+  color: var(--ink-soft);
+  opacity: 0.7;
+}
+.disappearance .figure .unit{
+  font-family: var(--mono); font-size: 12px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  margin-top: 12px; color: var(--ink-soft);
+}
+.disappearance .figure .pct{
+  font-family: var(--mono); font-size: 13px;
+  color: var(--mustard-deep); margin-top: 8px;
+  letter-spacing: 0.08em;
+}
+.disappearance .arrow{
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--serif); font-size: 32px;
+  color: var(--mustard);
+  background: var(--paper);
+  padding: 0 16px;
+}
+@media (max-width: 760px){
+  .disappearance{ grid-template-columns: 1fr; gap: 40px; }
+  .disappearance .arrow{ position: static; transform: none; }
+  .disappearance .figure .big{ font-size: 120px; }
+}
+
+/* ============================================ */
+/*  Map embed frame                             */
+/* ============================================ */
+.map-frame{
+  position: relative;
+  margin: 80px 0 40px;
+  background: var(--cream-warm);
+  border: 1px solid var(--rule);
+  padding: 14px;
+  box-shadow: 0 30px 60px -30px rgba(20,35,61, 0.25);
+}
+.map-frame::before{
+  content:""; position: absolute;
+  top:-1px; left:-1px; right:-1px; bottom:-1px;
+  border: 1px solid var(--rule-soft);
+  pointer-events:none;
+}
+.map-frame .caption{
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding: 8px 12px 14px;
+  flex-wrap: wrap; gap:12px;
+}
+.map-frame .caption .ttl{
+  font-family: var(--serif); font-size: 18px; color: var(--navy-deep);
+  font-style: italic; font-weight: 400;
+}
+.map-frame .caption .tag{
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--mustard-deep);
+}
+.map-frame iframe{
+  width: 100%; height: 580px;
+  border: 0; background: var(--paper);
+  display: block;
+}
+.map-frame .source{
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.05em;
+  color: var(--ink-soft); padding: 12px 12px 4px;
+  border-top: 1px solid var(--rule-soft); margin-top: 14px;
+  display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
+}
+.map-frame .source a{ color: var(--mustard-deep); text-decoration: none; }
+.map-frame .source a:hover{ text-decoration: underline; }
+@media (max-width: 720px){
+  .map-frame iframe{ height: 480px; }
+}
+
+/* ============================================ */
+/*  Hypothesis block                            */
+/* ============================================ */
+.hypothesis{
+  background: var(--navy-deep);
+  color: var(--cream);
+  padding: 64px 48px;
+  margin: 64px 0;
+  position: relative;
+}
+.hypothesis::before{
+  content:"";
+  position: absolute;
+  top: -1px; left: 24px;
+  background: var(--paper);
+  padding: 0 16px;
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--mustard-deep);
+  transform: translateY(-50%);
+}
+.hypothesis .lab{
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--mustard-soft); margin-bottom: 16px;
+}
+.hypothesis h3{
+  font-family: var(--serif); font-size: 28px; font-weight: 400;
+  font-style: italic;
+  color: var(--cream); margin-bottom: 24px; max-width: 30ch;
+}
+.hypothesis ul{
+  list-style: none;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px 48px;
+  margin-top: 32px;
+}
+.hypothesis li{
+  font-size: 15px; line-height: 1.6;
+  color: rgba(245,239,224, 0.85);
+  padding-left: 24px;
+  position: relative;
+}
+.hypothesis li::before{
+  content: "";
+  position: absolute; left:0; top: 10px;
+  width: 12px; height: 1px;
+  background: var(--mustard);
+}
+.hypothesis li strong{
+  display:block; color: var(--mustard-soft);
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: 17px; margin-bottom: 4px;
+}
+@media (max-width: 760px){
+  .hypothesis{ padding: 40px 24px; }
+  .hypothesis ul{ grid-template-columns: 1fr; }
+}
+
+/* ============================================ */
+/*  POINT 2 — coffee vs meal                    */
+/* ============================================ */
+#point2{ background: var(--cream); }
+
+.cafe-meal-viz{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  margin: 64px 0;
+}
+.viz-card{
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  padding: 32px;
+  position: relative;
+}
+.viz-card .head{
+  display:flex; justify-content:space-between; align-items:baseline;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.viz-card h4{
+  font-family: var(--serif); font-size: 24px;
+  font-weight: 400; font-style: italic;
+  color: var(--navy-deep);
+}
+.viz-card .tag{
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--mustard-deep);
+}
+.viz-card .stat-row{
+  display: flex; align-items: baseline; gap: 12px;
+  margin-bottom: 20px;
+}
+.viz-card .big-num{
+  font-family: var(--serif);
+  font-variant-numeric: lining-nums;
+  font-size: 88px; font-weight: 300;
+  color: var(--mustard); line-height: 1;
+}
+.viz-card .pct{
+  font-family: var(--mono); font-size: 14px;
+  color: var(--ink-soft);
+}
+.viz-card .desc{ font-size: 14px; color: var(--ink-soft); }
+
+/* segmented bar */
+.seg-bar{ margin-top: 24px; }
+.seg-bar .bar{
+  height: 24px; background: var(--cream-warm);
+  display:flex; overflow:hidden; border:1px solid var(--rule);
+}
+.seg-bar .seg{
+  height: 100%; display:flex; align-items:center; justify-content:center;
+  color: var(--cream); font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+}
+.seg-bar .seg.edu{ background: var(--navy-deep); }
+.seg-bar .seg.gu{ background: var(--mustard); color: var(--navy-deep); }
+.seg-bar .legend{
+  display:flex; justify-content:space-between; margin-top: 10px;
+  font-family: var(--mono); font-size: 10px; color: var(--ink-soft);
+  letter-spacing: 0.05em;
+}
+
+/* dot grid */
+.dot-grid{
+  display: grid;
+  grid-template-columns: repeat(20, 1fr);
+  gap: 4px;
+  margin: 48px 0 32px;
+}
+.dot-grid .dot{
+  aspect-ratio: 1;
+  background: var(--cream-warm);
+  border: 1px solid var(--rule-soft);
+  transition: all .3s;
+}
+.dot-grid .dot.meal{ background: var(--mustard); border-color: var(--mustard); }
+.dot-grid .dot.cafe{ background: var(--navy); border-color: var(--navy); }
+.dot-grid .dot.both{
+  background: linear-gradient(135deg, var(--mustard) 50%, var(--navy) 50%);
+  border-color: var(--navy);
+}
+
+.dot-grid-legend{
+  display:flex; flex-wrap:wrap; gap: 24px;
+  font-family: var(--mono); font-size: 11px; color: var(--ink-soft);
+  margin-top: 16px;
+}
+.dot-grid-legend span{ display:flex; align-items:center; gap:8px; }
+.dot-grid-legend .sw{
+  display:inline-block; width:14px; height:14px;
+  border: 1px solid var(--rule);
+}
+.dot-grid-legend .sw.meal{ background: var(--mustard); border-color: var(--mustard); }
+.dot-grid-legend .sw.cafe{ background: var(--navy); border-color: var(--navy); }
+.dot-grid-legend .sw.both{ background: linear-gradient(135deg, var(--mustard) 50%, var(--navy) 50%); }
+.dot-grid-legend .sw.none{ background: var(--cream-warm); }
+
+.dot-grid-cap{
+  font-family: var(--serif); font-style: italic;
+  font-size: 16px; color: var(--ink-soft);
+  text-align: center; max-width: 56ch; margin: 0 auto;
+}
+
+@media (max-width: 760px){
+  .cafe-meal-viz{ grid-template-columns: 1fr; gap: 32px; }
+  .dot-grid{ grid-template-columns: repeat(15, 1fr); }
+  .viz-card .big-num{ font-size: 64px; }
+}
+
+/* ============================================ */
+/*  Pullquote                                   */
+/* ============================================ */
+.pullquote{
+  text-align: center;
+  margin: 100px auto;
+  max-width: 720px;
+  position: relative;
+}
+.pullquote::before{
+  content: "";
+  display:block; width:60px; height:1px;
+  background: var(--mustard); margin: 0 auto 32px;
+}
+.pullquote p{
+  font-family: var(--serif);
+  font-size: clamp(28px, 3.5vw, 42px);
+  line-height: 1.3;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--navy-deep);
+}
+.pullquote p em{
+  color: var(--mustard-deep);
+  font-style: italic;
+}
+.pullquote cite{
+  display:block; font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-soft); font-style: normal;
+  margin-top: 24px;
+}
+
+/* ============================================ */
+/*  Conclusion — three frames                   */
+/* ============================================ */
+#conclusion{
+  background: var(--navy-deep);
+  color: var(--cream);
+}
+#conclusion .chapter h2{ color: var(--cream); }
+#conclusion .chapter h2 em{ color: var(--mustard-soft); }
+#conclusion .chapter .lede{ color: rgba(245,239,224, 0.7); }
+#conclusion .chapter .num{ color: var(--mustard-soft); border-color: var(--mustard); }
+#conclusion .chapter .num small{ color: rgba(245,239,224, 0.6); }
+
+.frames{
+  display:grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+  margin: 64px 0;
+}
+.frame{
+  background: var(--navy);
+  padding: 40px 32px;
+  border: 1px solid var(--navy-mid);
+  position: relative;
+  transition: all .3s;
+}
+.frame:hover{
+  border-color: var(--mustard);
+  transform: translateY(-4px);
+}
+.frame .ico{
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: 36px; color: var(--mustard);
+  margin-bottom: 24px; display:block;
+}
+.frame h4{
+  font-family: var(--serif); font-size: 24px; font-weight: 400;
+  margin-bottom: 16px; color: var(--cream);
+}
+.frame p{
+  font-size: 14.5px; line-height: 1.7;
+  color: rgba(245,239,224, 0.75);
+}
+.frame .tag{
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--mustard-soft); margin-bottom: 16px; display:block;
+}
+@media (max-width: 760px){
+  .frames{ grid-template-columns: 1fr; }
+}
+
+/* ============================================ */
+/*  Colophon / sources                          */
+/* ============================================ */
+#colophon{ background: var(--cream); padding: 80px 0; }
+
+.colophon-grid{
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 64px;
+  margin-top: 40px;
+}
+.colophon-grid h3{
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: 24px; color: var(--navy-deep);
+  border-top: 2px solid var(--mustard);
+  padding-top: 16px;
+}
+.colophon-grid ul{ list-style: none; }
+.colophon-grid li{
+  padding: 14px 0;
+  border-bottom: 1px dashed var(--rule);
+  font-size: 14px; line-height: 1.5;
+}
+.colophon-grid li:last-child{ border-bottom: 0; }
+.colophon-grid li .src-name{
+  font-family: var(--serif); font-style: italic;
+  color: var(--navy-deep); display:block; margin-bottom: 4px;
+}
+.colophon-grid li a{
+  font-family: var(--mono); font-size: 11px;
+  color: var(--mustard-deep);
+  text-decoration: none; word-break: break-all;
+}
+.colophon-grid li a:hover{ text-decoration: underline; }
+@media (max-width: 760px){
+  .colophon-grid{ grid-template-columns: 1fr; gap: 24px; }
+}
+
+footer{
+  text-align: center;
+  padding: 60px 32px;
+  border-top: 1px solid var(--rule);
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.15em; color: var(--ink-soft);
+  background: var(--cream);
+}
+footer .signoff{
+  font-family: var(--serif); font-style: italic;
+  font-size: 14px; color: var(--ink-soft);
+  letter-spacing: 0;
+  margin-bottom: 16px;
+}
+
+/* ---------- curator namecard ---------- */
+.namecard{
+  max-width: 560px;
+  margin: 0 auto 48px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  box-shadow: 0 24px 48px -28px rgba(20,35,61, 0.3);
+  text-align: left;
+  position: relative;
+}
+.namecard::before{
+  content:""; position:absolute;
+  top:6px; left:6px; right:6px; bottom:6px;
+  border:1px solid var(--rule-soft); pointer-events:none;
+}
+.namecard .nc-top{
+  display:flex; justify-content:space-between; align-items:center;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--rule-soft);
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--mustard-deep);
+}
+.namecard .nc-top .cls{ color: var(--ink-soft); }
+.namecard .nc-body{ padding: 28px 24px 24px; }
+.namecard .nc-role{
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink-soft); margin-bottom: 10px;
+}
+.namecard .nc-name{
+  font-family: var(--serif); font-weight: 500;
+  font-size: 30px; line-height: 1.1;
+  color: var(--navy-deep);
+  margin-bottom: 6px;
+  letter-spacing: 0;
+}
+.namecard .nc-handle{
+  font-family: var(--mono); font-size: 12px;
+  color: var(--mustard-deep); text-decoration: none;
+  letter-spacing: 0.04em;
+  display:inline-flex; align-items:center; gap:6px;
+  margin-bottom: 18px;
+}
+.namecard .nc-handle:hover{ text-decoration: underline; }
+.namecard .nc-bio{
+  font-family: var(--sans); font-size: 14px;
+  line-height: 1.7; color: var(--ink-soft);
+  letter-spacing: 0;
+  border-top: 1px dashed var(--rule);
+  padding-top: 16px;
+}
+@media (max-width: 600px){
+  .namecard .nc-name{ font-size: 24px; }
+}
+
+/* ============================================ */
+/*  Reveal-on-scroll                            */
+/* ============================================ */
+.reveal{
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .9s ease, transform .9s ease;
+}
+.reveal.in{ opacity: 1; transform: translateY(0); }
+
+/* count-up element starts at 0 visually */
+.countup{ display: inline-block; min-width: 1.2em; text-align: center; }
+</style>
+</head>
+<body>
+
+<!-- =========== META BAR =========== -->
+<div class="meta-bar">
+  <div class="left">
+    <span class="dot"></span>
+    <span>An Exhibition · 2025</span>
+  </div>
+  <nav>
+    <a href="#context">배경</a>
+    <a href="#point1">소멸</a>
+    <a href="#point2">대체</a>
+    <a href="#point3">분기</a>
+    <a href="#conclusion">결론</a>
+    <a href="#colophon">출처</a>
+  </nav>
+</div>
+
+<!-- =========== HERO =========== -->
+<header class="hero">
+  <div class="shell">
+    <div class="hero-cat">
+      <div><span class="k">Field</span>Digital Humanities · Library Studies</div>
+      <div><span class="k">Scope</span>Seoul · 2019 → 2025</div>
+      <div><span class="k">Format</span>Data Essay · Interactive Exhibition</div>
+    </div>
+
+    <h1>
+      <span class="ko">도서관 구내식당은<br/>왜 <em>사라졌는가</em>?</span>
+      Where Did the <em>Library Cafeterias</em> Go?
+    </h1>
+
+    <p class="hero-sub">
+      서울시 공공도서관의 구내식당은 지난 6년 사이 27개에서 6개로 줄었어요.
+      자주 가던 도서관 식당이 사라졌다는 사적인 질문에서 출발해서,
+      코로나 이후 공공도서관이라는 공간이 어떻게 다시 정의되고 있는지를
+      '식사 공간'이라는 가장 일상적인 단면으로 들여다봤어요.
+    </p>
+
+    <div class="scroll-cue">
+      <span class="line"></span>
+      <span>SCROLL TO BEGIN</span>
+    </div>
+  </div>
+
+  <div class="shell">
+    <div class="hero-foot">
+      <div class="col">
+        <span class="lab">Curated by</span>
+        사적인북마크 · 2025
+      </div>
+      <div class="col">
+        <span class="lab">Tools</span>
+        Python · Notion · D3.js
+      </div>
+      <div class="col">
+        <span class="lab">Sources</span>
+        국가도서관통계시스템 · 서울시 열린데이터광장
+      </div>
+      <div class="col">
+        <span class="lab">Duration</span>
+        2019 (pre-COVID) ↔ 2025 (current)
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- =========== CONTEXT =========== -->
+<section id="context">
+  <div class="shell">
+    <div class="chapter">
+      <div class="num">
+        00
+        <small>Premise</small>
+      </div>
+      <div>
+        <h2>한 이용자의 <em>사적인 질문</em>에서<br/>출발한 조사예요</h2>
+        <p class="lede">
+          자주 가던 공공도서관의 구내식당이 코로나 이후 사라졌어요.
+          도서관에서 오래 머무는 게 불편해졌을 뿐 아니라,
+          구내식당이 일종의 '생활 인프라'였다는 걸 그제야 깨달았죠.
+          그런데 이걸 정리해둔 자료를 찾기가 어려워서, 직접 조사해봤어요.
+        </p>
+      </div>
+    </div>
+
+    <div class="context-grid">
+      <div class="context-card reveal">
+        <div class="ttl">Objective</div>
+        <h4>변화를 데이터로</h4>
+        <p>코로나 직전인 2019년과 최신의 2025년 데이터를 비교해서 서울시내 공공도서관 구내식당이 어떻게 변했는지 살펴봤어요. 경험적인 추측에서 한 발 더 나아가서 전자지도와 차트로 시각화했어요.</p>
+      </div>
+      <div class="context-card reveal">
+        <div class="ttl">Method</div>
+        <h4>공공 + 수제 데이터</h4>
+        <p>공공도서관 목록과 위치는 국가도서관통계시스템·서울시 열린데이터광장에서 가져왔지만, 편의시설 보유 여부는 공공데이터가 없어요. 그래서 블로거들이 모아둔 정보와 직접 검색을 통해 수동으로 가공했어요.</p>
+      </div>
+      <div class="context-card reveal">
+        <div class="ttl">Scope</div>
+        <h4>공공도서관에 한정</h4>
+        <p>국회도서관·국립중앙도서관의 구내식당은 유명하지만, 공식 분류상 '국립도서관'이라서 이번 조사에서는 빠졌어요. 카페 보유 여부 데이터는 2025년만 있고 추후 변동될 수 있어요. <em>제보 환영이에요! 🤗</em></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========== POINT 1 =========== -->
+<section id="point1">
+  <div class="shell">
+    <div class="chapter">
+      <div class="num">
+        01
+        <small>The Disappearance</small>
+      </div>
+      <div>
+        <h2>6년 동안<br/><em>스물한 개의 식당</em>이<br/>조용히 사라졌어요</h2>
+        <p class="lede">
+          같은 기간 서울시 공공도서관의 수는 180곳에서 213곳으로 늘었어요.
+          인프라는 확장됐는데, 이용자의 식사를 책임지던 식당은
+          오히려 줄었네요. 점유율로 보면 <strong>15.0%에서 2.8%</strong>로의 큰 후퇴예요.
+        </p>
+      </div>
+    </div>
+
+    <div class="disappearance">
+      <div class="figure reveal">
+        <div class="tiny">Pre-COVID</div>
+        <div class="year">2019</div>
+        <div class="big numeral"><span class="countup" data-to="27">0</span></div>
+        <div class="unit">cafeterias</div>
+        <div class="pct">15.0% of all libraries (180)</div>
+      </div>
+      <div class="figure reveal">
+        <div class="tiny">Current</div>
+        <div class="year">2025</div>
+        <div class="big numeral fade"><span class="countup" data-to="6">0</span></div>
+        <div class="unit">cafeterias</div>
+        <div class="pct">2.8% of all libraries (213)</div>
+      </div>
+    </div>
+
+    <div class="map-frame reveal">
+      <div class="caption">
+        <div class="ttl">Map 01 · 서울 공공도서관 구내식당의 분포, 2019 ↔ 2025</div>
+        <div class="tag">Interactive · 클릭하여 비교</div>
+      </div>
+      <iframe src="https://pinakes-me.github.io/seoul-library-cafeteria/" title="서울 공공도서관 구내식당 분포 비교 지도" loading="lazy"></iframe>
+      <div class="source">
+        <span>Source · Python + 수제 데이터셋 / Leaflet</span>
+        <a href="https://pinakes-me.github.io/seoul-library-cafeteria/" target="_blank" rel="noopener">새 창에서 열기 ↗</a>
+      </div>
+    </div>
+
+    <div class="hypothesis reveal">
+      <div class="lab">Working Hypothesis</div>
+      <h3>식당이 사라진 게 코로나 탓만은 아니에요.<br/>그 시기는 <em>여러 변화가 합류하는 지점</em>이었어요.</h3>
+      <ul>
+        <li>
+          <strong>리모델링과 신규 개관</strong>
+          복합문화공간 트렌드가 설계 단계부터 반영되면서, 구내식당은 더 이상 필수 공간으로 여겨지지 않게 됐어요.
+        </li>
+        <li>
+          <strong>위탁 종료의 누적</strong>
+          코로나기 폐쇄와 위탁 계약 만료가 맞물렸고, 인건비·재료비 같은 운영 여건이 악화되면서 갱신이 어려워졌어요.
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- =========== POINT 2 =========== -->
+<section id="point2">
+  <div class="shell">
+    <div class="chapter">
+      <div class="num">
+        02
+        <small>The Replacement</small>
+      </div>
+      <div>
+        <h2>2025년의 도서관에는<br/>밥 대신 <em>커피</em>가 있어요</h2>
+        <p class="lede">
+          식당이 사라진 자리를 정확히 카페가 대체한 건 아니에요.
+          그래도 213개 관 중 카페는 13곳, 식당은 6곳이에요. 비율로는 2.2배 차이.
+          어느 쪽이 더 '도서관다운' 시설인지에 대한
+          무언의 합의가 옮겨 가고 있는 것 같아요.
+        </p>
+      </div>
+    </div>
+
+    <div class="cafe-meal-viz">
+      <div class="viz-card reveal">
+        <div class="head">
+          <h4>구내식당</h4>
+          <div class="tag">Cafeteria · 2025</div>
+        </div>
+        <div class="stat-row">
+          <div class="big-num numeral"><span class="countup" data-to="6">0</span></div>
+          <div class="pct">/ 213 libraries<br/>= 2.8%</div>
+        </div>
+        <p class="desc">교육청 도서관이 4곳, 자치구 도서관이 2곳이에요. 학생·수험생 이용자 비중이 높은 교육청 도서관에서 식당이 더 오래 살아남았네요.</p>
+        <div class="seg-bar">
+          <div class="bar">
+            <div class="seg edu" style="width:66.7%">교육청 67%</div>
+            <div class="seg gu" style="width:33.3%">자치구 33%</div>
+          </div>
+          <div class="legend">
+            <span>4 / 6 관</span>
+            <span>2 / 6 관</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="viz-card reveal">
+        <div class="head">
+          <h4>카페</h4>
+          <div class="tag">Café · 2025</div>
+        </div>
+        <div class="stat-row">
+          <div class="big-num numeral"><span class="countup" data-to="13">0</span></div>
+          <div class="pct">/ 213 libraries<br/>= 6.1%</div>
+        </div>
+        <p class="desc">반대로 카페는 자치구 도서관이 11곳으로 압도적이에요. 13곳 중 6곳은 2020년 이후 신규 개관, 2곳은 리모델링 후 재개관이에요.</p>
+        <div class="seg-bar">
+          <div class="bar">
+            <div class="seg gu" style="width:84.6%">자치구 85%</div>
+            <div class="seg edu" style="width:15.4%">교육청 15%</div>
+          </div>
+          <div class="legend">
+            <span>11 / 13 관</span>
+            <span>2 / 13 관</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="label label--rule" style="margin: 64px 0 24px;">213 LIBRARIES, GRIDDED</div>
+      <div class="dot-grid" id="dotgrid"></div>
+      <div class="dot-grid-legend">
+        <span><i class="sw meal"></i>식당만 (4관)</span>
+        <span><i class="sw cafe"></i>카페만 (11관)</span>
+        <span><i class="sw both"></i>둘 다 (2관)</span>
+        <span><i class="sw none"></i>둘 다 없음 (196관)</span>
+      </div>
+      <p class="dot-grid-cap" style="margin-top: 24px;">
+        식당과 카페를 모두 합쳐도 도서관의 <em>8.9%</em>밖에 안 돼요.<br/>
+        2019년에는 식당만으로도 <em>15.0%</em>를 차지하던 시절이 있었거든요.
+      </p>
+    </div>
+
+    <div class="pullquote">
+      <p>"공부방으로서의 도서관이 끝나가는 자리에,<br/>새로운 도서관이 천천히 들어서고 있어요."</p>
+      <cite>— Field note, 2025</cite>
+    </div>
+  </div>
+</section>
+
+<!-- =========== POINT 3 =========== -->
+<section id="point3" style="background: var(--cream);">
+  <div class="shell">
+    <div class="chapter">
+      <div class="num">
+        03
+        <small>The Divergence</small>
+      </div>
+      <div>
+        <h2>같은 '공공도서관'이어도,<br/><em>운영 주체</em>가 다르면<br/>풍경이 달라져요</h2>
+        <p class="lede">
+          서울시교육청 도서관과 자치구 도서관은 법적으로는 똑같은 공공도서관이에요.
+          그런데 누가 운영하느냐에 따라 이용자 구성, 공간 철학,
+          그리고 식당과 카페에 대한 태도가 갈리네요.
+        </p>
+      </div>
+    </div>
+
+    <div class="cafe-meal-viz">
+      <div class="viz-card reveal">
+        <div class="head">
+          <h4>교육청 도서관</h4>
+          <div class="tag">Education Office</div>
+        </div>
+        <p class="desc" style="margin-bottom: 24px;">
+          전통적으로 칸막이가 설치된 대규모 열람실을 운영해왔어요.
+          학생과 수험생 이용자 비중이 높아서 구내식당을 <em>필수 시설</em>로 여겼을 가능성이 커요.
+          2025년 남은 식당 6곳 중 4곳(67%)이 교육청 소속이라는 점이 이를 뒷받침해요.
+        </p>
+        <div class="label" style="margin-bottom: 8px;">Signature space</div>
+        <div style="font-family: var(--serif); font-style: italic; font-size: 24px; color: var(--navy-deep);">
+          열람실 · 식당 · 칸막이
+        </div>
+      </div>
+
+      <div class="viz-card reveal">
+        <div class="head">
+          <h4>자치구 도서관</h4>
+          <div class="tag">District Office</div>
+        </div>
+        <p class="desc" style="margin-bottom: 24px;">
+          복합문화공간이자 지역 주민 커뮤니티 공간으로서의 성격이 강해요.
+          식당보다 운영이 쉽고 주민 선호도가 높은 <em>카페</em> 도입을 주도했어요.
+          2025년 카페 보유 13곳 중 11곳(85%)이 자치구 소속이거든요.
+        </p>
+        <div class="label" style="margin-bottom: 8px;">Signature space</div>
+        <div style="font-family: var(--serif); font-style: italic; font-size: 24px; color: var(--navy-deep);">
+          라운지 · 카페 · 오픈 공간
+        </div>
+      </div>
+    </div>
+
+    <div class="map-frame reveal">
+      <div class="caption">
+        <div class="ttl">Map 02 · 운영 주체별 편의시설 분포, 2025</div>
+        <div class="tag">🟠 식당  🟢 카페  🔵 둘 다  ⚫️ 둘 다 없음</div>
+      </div>
+      <iframe src="https://pinakes-me.github.io/seoul-library-facility_by_owner/" title="설립 주체별 편의시설 분포 지도" loading="lazy"></iframe>
+      <div class="source">
+        <span>Source · Python + 수제 데이터셋 / Leaflet</span>
+        <a href="https://pinakes-me.github.io/seoul-library-facility_by_owner/" target="_blank" rel="noopener">새 창에서 열기 ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========== CONCLUSION =========== -->
+<section id="conclusion">
+  <div class="shell">
+    <div class="chapter">
+      <div class="num">
+        ✕
+        <small>Interpretation</small>
+      </div>
+      <div>
+        <h2>왜 <em>이런 변화</em>가<br/>일어났을까요</h2>
+        <p class="lede">
+          대부분의 공공도서관은 구내식당을 직영이 아니라 위탁으로 운영해왔어요.
+          코로나 시기의 장기 폐쇄가 이후의 운영 갱신에 영향을 줬을 거라는
+          추측을 출발점으로, 세 가지 더 큰 흐름을 같이 살펴봤어요.
+        </p>
+      </div>
+    </div>
+
+    <div class="frames">
+      <div class="frame reveal">
+        <span class="ico">i.</span>
+        <span class="tag">Paradigm</span>
+        <h4>패러다임의 전환</h4>
+        <p>
+          '공부하러 오는 공부방'에서 '여가를 즐기는 복합문화공간'으로 옮겨가고 있어요.
+          수험생의 식사(끼니)보다 이용자의 휴식(커피)이
+          중요해진 사회적 합의가 도서관 설계 단계에 반영되고 있는 것 같아요.
+        </p>
+      </div>
+      <div class="frame reveal">
+        <span class="ico">ii.</span>
+        <span class="tag">Economy</span>
+        <h4>경제성의 문제</h4>
+        <p>
+          물가와 인건비가 오르면서 저렴한 구내식당 운영은 적자 구조가 됐어요.
+          반면 카페는 적은 공간과 인력으로 효율적인 운영이 가능해요.
+          위탁 사업자에게도 카페 쪽이 들어오기 쉬운 시장이 된 거죠.
+        </p>
+      </div>
+      <div class="frame reveal">
+        <span class="ico">iii.</span>
+        <span class="tag">Urban context</span>
+        <h4>상권의 변화</h4>
+        <p>
+          도서관 주변 외식 인프라가 잘 발달했어요.
+          편의점, 패스트푸드, 배달 같은 대안이 많아지면서
+          굳이 도서관 안에서 식사를 해결할 필요가 줄어든 것 같아요.
+        </p>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top: 80px;">
+      <div class="label label--inverse">A Note</div>
+      <p style="font-family: var(--serif); font-style: italic; font-size: 20px; color: rgba(245,239,224, 0.85); margin-top: 24px; max-width: 56ch; margin-left:auto; margin-right:auto; line-height: 1.6;">
+        식당의 소멸은 단순히 시설 하나가 사라지는 일이 아니에요.<br/>
+        '공공도서관'이라는 단어의 의미가
+        조용히 다시 쓰여지고 있다는 신호일지도 몰라요.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- =========== COLOPHON =========== -->
+<section id="colophon">
+  <div class="shell">
+    <div class="chapter">
+      <div class="num">
+        ✦
+        <small>Colophon</small>
+      </div>
+      <div>
+        <h2>출처와 <em>한계</em>에 대해서</h2>
+        <p class="lede">
+          이 조사는 공식 통계와 수제 데이터의 혼합으로 이뤄졌어요.
+          특히 카페 데이터는 2025년 시점의 시민 관찰에 기반한 잠정값이에요.
+          새로운 정보나 정정 사항이 있다면 언제든 환영해요. 🤗
+        </p>
+      </div>
+    </div>
+
+    <div class="colophon-grid">
+      <div>
+        <h3>Primary Data</h3>
+        <ul>
+          <li>
+            <span class="src-name">국가도서관통계시스템</span>
+            도서관통계 > 공공도서관 > 전체통계보기
+            <br/><a href="https://www.libsta.go.kr/statistics/public/stat" target="_blank" rel="noopener">libsta.go.kr</a>
+          </li>
+          <li>
+            <span class="src-name">서울시 열린데이터광장</span>
+            서울시 공공도서관 현황정보
+            <br/><a href="https://data.seoul.go.kr/dataList/OA-15480/S/1/datasetView.do" target="_blank" rel="noopener">data.seoul.go.kr</a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h3>Manual Enrichment</h3>
+        <ul>
+          <li>
+            <span class="src-name">서울시교육청도서관 명단 기본정보</span>
+            재밌고 유익한 블로그
+            <br/><a href="https://blog.naver.com/lim4447/221528075277" target="_blank" rel="noopener">blog.naver.com/lim4447/221528075277</a>
+          </li>
+          <li>
+            <span class="src-name">구내식당 있는 서울의 도서관</span>
+            슬픈개그맨
+            <br/><a href="https://blog.naver.com/sadcomic/223339634687" target="_blank" rel="noopener">blog.naver.com/sadcomic/223339634687</a>
+          </li>
+          <li>
+            <span class="src-name">기타 검색 후 수동 가공한 CSV 데이터</span>
+            카페 보유 여부 데이터는 2025년 시점의 잠정값이라, 추후 변동될 수 있어요
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="namecard">
+    <div class="nc-top">
+      <span>Curator's Card</span>
+      <span class="cls">DH · LIS</span>
+    </div>
+    <div class="nc-body">
+      <div class="nc-role">만든이 · Digital Curator</div>
+      <div class="nc-name">사적인북마크</div>
+      <a class="nc-handle" href="https://twitter.com/pinakes_me" target="_blank" rel="noopener">Twitter @pinakes_me ↗</a>
+      <p class="nc-bio">
+        사서를 희망하는 사람. 디지털인문학과 문헌정보학의 교차점에서,
+        도서관 안팎의 비정형 데이터를 발굴하고
+        새로운 가치로 변환하는 데 관심이 많습니다.
+      </p>
+    </div>
+  </div>
+  <div class="signoff">새로운 정보나 제보는 위 연락처로 언제든 환영해요 🤗</div>
+  <div>Copyright © 사적인북마크 · All rights reserved · 2025</div>
+</footer>
+
+<script>
+/* =========== Reveal on scroll =========== */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* =========== Count up =========== */
+function countUp(el, to, dur=1800){
+  const start = performance.now();
+  const from = 0;
+  function step(t){
+    const p = Math.min(1, (t - start) / dur);
+    // ease out cubic
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(from + (to - from) * eased);
+    if(p < 1) requestAnimationFrame(step);
+    else el.textContent = to;
+  }
+  requestAnimationFrame(step);
+}
+const countObs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const el = e.target;
+      const to = parseInt(el.dataset.to, 10);
+      countUp(el, to);
+      countObs.unobserve(el);
+    }
+  });
+}, { threshold: 0.6 });
+document.querySelectorAll('.countup').forEach(el=>countObs.observe(el));
+
+/* =========== Dot grid: 213 libraries =========== */
+(function(){
+  const grid = document.getElementById('dotgrid');
+  if(!grid) return;
+  const total = 213;
+  const counts = { meal: 4, cafe: 11, both: 2 }; // 4+11+2 = 17 special, 196 none
+  const order = [];
+  // distribute: both(2), meal(4), cafe(11), none(196). We'll shuffle positions.
+  const arr = [];
+  for(let i=0;i<counts.both;i++) arr.push('both');
+  for(let i=0;i<counts.meal;i++) arr.push('meal');
+  for(let i=0;i<counts.cafe;i++) arr.push('cafe');
+  while(arr.length < total) arr.push('none');
+  // deterministic shuffle (so it looks scattered but stable)
+  let seed = 42;
+  const rand = ()=> { seed = (seed * 9301 + 49297) % 233280; return seed/233280; };
+  for(let i=arr.length-1; i>0; i--){
+    const j = Math.floor(rand() * (i+1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  arr.forEach((cls, idx)=>{
+    const d = document.createElement('div');
+    d.className = 'dot' + (cls !== 'none' ? ' ' + cls : '');
+    d.style.transitionDelay = (idx * 4) + 'ms';
+    grid.appendChild(d);
+  });
+})();
+
+/* =========== Smooth scroll for nav (already in CSS, but enhance offset) =========== */
+document.querySelectorAll('.meta-bar nav a').forEach(a=>{
+  a.addEventListener('click', (e)=>{
+    const href = a.getAttribute('href');
+    if(href.startsWith('#')){
+      e.preventDefault();
+      const tgt = document.querySelector(href);
+      if(tgt){
+        const y = tgt.getBoundingClientRect().top + window.scrollY - 60;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+  });
+});
+</script>
+
+</body>
+</html>
