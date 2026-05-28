@@ -33,9 +33,6 @@
 
 ## 스크린샷 · Screenshots
 
-아래 주석을 풀고, 사이트 스크린샷을 assets/ 폴더에 올린 뒤 사용하세요.
-(레포에 assets 폴더를 만들고 png 파일 3장을 드래그&드롭하면 됩니다)
-
 ### 오프닝 · Hero
 ![hero](./assets/hero.png)
 
