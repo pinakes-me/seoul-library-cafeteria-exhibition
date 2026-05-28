@@ -4,7 +4,7 @@
 
 > 자주 가던 공공도서관의 구내식당이 코로나 이후 사라졌다. 한 이용자의 사적인 질문에서 출발해, 서울시 공공도서관 편의시설의 변화를 데이터로 추적하고 인터랙티브 전시로 시각화한 디지털 인문학(DH) 프로젝트다.
 
-🔗 **전시 보기 (Live Exhibition)** — https://pinakes-me.github.io/seoul-library-cafeteria-exhibition/
+🔗 **전시 보기 (Live Exhibition)**  https://pinakes-me.github.io/seoul-library-cafeteria-exhibition/
 
 ---
 
