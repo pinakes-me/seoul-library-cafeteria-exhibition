@@ -62,7 +62,7 @@
 
 수집한 데이터에 `2019년/2025년 구내식당 보유 여부`, `2025년 카페 보유 여부`, `설립 주체`, `비고` 등의 컬럼을 추가해 CSV로 정리한 뒤, Python(folium)으로 전자지도를, 비교 차트는 전시 사이트 내에서 직접 시각화했다. 지도 생성 코드는 `scripts/` 폴더에 공개되어 있다.
 
-- **Tools** : Python(folium · Leaflet 기반) · Notion · 생성형 AI(ChatGPT, Gemini) 보조
+- **Tools** : Python(folium · Leaflet 기반) · Notion · 생성형 AI(ChatGPT, Gemini, Claude) 보조
 - **Output** : 인터랙티브 전자지도 2종, 비교 차트, 스크롤 기반 전시 사이트(HTML/CSS/JS)
 
 ---
